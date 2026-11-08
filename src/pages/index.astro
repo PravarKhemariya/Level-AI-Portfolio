@@ -1,0 +1,78 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroMotif from '../components/HeroMotif.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { projects, site } from '../content/portfolio';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+
+<Base>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero__inner">
+      <div class="hero__text">
+        <p class="eyebrow">
+          <span class="eyebrow__part">{site.descriptor}</span> · <span class="eyebrow__part">{site.focus}</span>
+        </p>
+        <h1 id="hero-title" class="hero__title">{site.name}</h1>
+        <p class="hero__intro">{site.intro}</p>
+        <p class="hero__meta">
+          Three prototype projects at {site.organization}, each written up as a short case study
+          with links to the live demos.
+        </p>
+        <a class="button button--ghost" href="#work">See the case studies <span class="arrow" aria-hidden="true">↓</span></a>
+      </div>
+      <div class="hero__art">
+        <HeroMotif />
+      </div>
+    </div>
+  </section>
+
+  <section class="themes" aria-labelledby="themes-title">
+    <div class="wrap">
+      <h2 id="themes-title" class="section-title">Threads running through the work</h2>
+      <ol class="themes__list">
+        {
+          site.themes.map((t) => (
+            <li class="theme">
+              <h3 class="theme__title">{t.title}</h3>
+              <p>{t.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section id="work" class="work" aria-labelledby="work-title" tabindex="-1">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="work-title" class="section-title">Case studies</h2>
+        <p class="section-note">
+          Each is a prototype. Benefits described are what the work set out to achieve, not measured
+          results.
+        </p>
+      </div>
+      <div class="cards">
+        {projects.map((p) => <ProjectCard project={p} href={`${base}projects/${p.slug}/`} />)}
+      </div>
+    </div>
+  </section>
+
+  {
+    site.draft && (
+      <section class="review" aria-labelledby="review-title">
+        <div class="wrap">
+          <div class="review__box">
+            <h2 id="review-title" class="review__title">Pending confirmation before release</h2>
+            <ul>
+              {site.reviewNotes.map((n) => (
+                <li>{n}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+    )
+  }
+</Base>

@@ -1,0 +1,27 @@
+---
+import type { DemoLink } from '../content/portfolio';
+
+interface Props {
+  demos: DemoLink[];
+}
+
+const { demos } = Astro.props;
+---
+
+<ul class="demos">
+  {
+    demos.map((demo) => (
+      <li class="demo">
+        <span class="demo__surface">{demo.surface}</span>
+        <a class="button" href={demo.url} target="_blank" rel="noopener noreferrer">
+          {demo.label}
+          <span class="visually-hidden"> (external prototype, opens in a new tab)</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+            <path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6" />
+          </svg>
+        </a>
+        <span class="demo__host">{new URL(demo.url).host}</span>
+      </li>
+    ))
+  }
+</ul>

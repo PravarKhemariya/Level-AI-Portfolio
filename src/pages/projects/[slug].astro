@@ -1,0 +1,130 @@
+---
+import Base from '../../layouts/Base.astro';
+import Flow from '../../components/Flow.astro';
+import DemoLinks from '../../components/DemoLinks.astro';
+import { projects, site, type Project } from '../../content/portfolio';
+
+export function getStaticPaths() {
+  return projects.map((project, i) => ({
+    params: { slug: project.slug },
+    props: {
+      project,
+      prev: projects[(i - 1 + projects.length) % projects.length],
+      next: projects[(i + 1) % projects.length],
+    },
+  }));
+}
+
+interface Props {
+  project: Project;
+  prev: Project;
+  next: Project;
+}
+
+const { project, prev, next } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const href = (p: Project) => `${base}projects/${p.slug}/`;
+---
+
+<Base title={project.title} description={project.summary}>
+  <article class="case" aria-labelledby="case-title">
+    <header class="case__head">
+      <div class="wrap">
+        <a class="back" href={`${base}#work`}><span aria-hidden="true">←</span> All case studies</a>
+        <p class="eyebrow">Case study {project.number}</p>
+        <h1 id="case-title" class="case__title">{project.title}</h1>
+        <p class="case__summary">{project.summary}</p>
+        <dl class="facts">
+          <div>
+            <dt>Status</dt>
+            <dd>
+              <span class="status">
+                <span class="status__label">{project.status.label}</span>
+                <span class="status__scope">{project.status.scope}</span>
+              </span>
+            </dd>
+          </div>
+          <div>
+            <dt>Involvement</dt>
+            <dd>{project.contribution}</dd>
+          </div>
+          <div>
+            <dt>Context</dt>
+            <dd>{site.organization}</dd>
+          </div>
+        </dl>
+      </div>
+    </header>
+
+    <div class="wrap case__body">
+      <section class="case__section" aria-labelledby="problem">
+        <h2 id="problem" class="case__h2"><span class="case__n" aria-hidden="true">A</span>The problem</h2>
+        <div class="prose">{project.problem.map((para) => <p>{para}</p>)}</div>
+      </section>
+
+      <section class="case__section" aria-labelledby="approach">
+        <h2 id="approach" class="case__h2"><span class="case__n" aria-hidden="true">B</span>The approach</h2>
+        <div class="prose">
+          <p class="lead">{project.approach.intro}</p>
+          <ul class="ticks">{project.approach.points.map((pt) => <li>{pt}</li>)}</ul>
+          {project.related && <p class="related">{project.related}</p>}
+        </div>
+      </section>
+
+      <section class="case__section case__section--wide" aria-labelledby="workflow">
+        <h2 id="workflow" class="case__h2"><span class="case__n" aria-hidden="true">C</span>How it flows</h2>
+        <Flow diagram={project.diagram} id={`flow-${project.slug}`} />
+        <p class="diagram-note">Illustrative diagram, not a screenshot of the prototype.</p>
+      </section>
+
+      <section class="case__section" aria-labelledby="prototype">
+        <h2 id="prototype" class="case__h2"><span class="case__n" aria-hidden="true">D</span>What the prototype shows</h2>
+        <div class="prose">
+          <ul class="ticks">{project.prototypeShows.map((s) => <li>{s}</li>)}</ul>
+          <div class="benefit">
+            <p class="benefit__label">Intended benefit</p>
+            <p class="benefit__text">{project.intendedBenefit}</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="case__section" aria-labelledby="demos">
+        <h2 id="demos" class="case__h2"><span class="case__n" aria-hidden="true">E</span>Try the prototype</h2>
+        <div class="prose">
+          <p>
+            {project.demos.length > 1 ? 'These demos are' : 'This demo is'} hosted externally and
+            {project.demos.length > 1 ? ' open' : ' opens'} in a new tab.
+          </p>
+          <DemoLinks demos={project.demos} />
+          {
+            project.sourceUrl && (
+              <p>
+                <a class="text-link" href={project.sourceUrl} rel="noopener noreferrer">
+                  View source
+                </a>
+              </p>
+            )
+          }
+        </div>
+      </section>
+
+      <section class="case__section" aria-labelledby="scope">
+        <h2 id="scope" class="case__h2"><span class="case__n" aria-hidden="true">F</span>Scope of this case study</h2>
+        <div class="prose">
+          <ul class="limits">{project.notClaimed.map((c) => <li>{c}</li>)}</ul>
+        </div>
+      </section>
+    </div>
+
+    <nav class="wrap pager" aria-label="More case studies">
+      <a class="pager__link" href={href(prev)}>
+        <span class="pager__dir">Previous</span>
+        <span class="pager__title">{prev.title}</span>
+      </a>
+      <a class="pager__link pager__link--next" href={href(next)}>
+        <span class="pager__dir">Next</span>
+        <span class="pager__title">{next.title}</span>
+      </a>
+    </nav>
+  </article>
+</Base>
