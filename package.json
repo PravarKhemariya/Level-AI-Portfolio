@@ -1,0 +1,37 @@
+{
+  "name": "pravar-khemariya-portfolio",
+  "version": "1.0.0",
+  "description": "Product management portfolio (private review draft).",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "astro build && vitest run",
+    "test:unit": "vitest run tests/content.test.ts",
+    "screenshots": "node scripts/screenshots.mjs",
+    "test:a11y": "node scripts/a11y.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PravarKhemariya/Level-AI-Portfolio.git"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/newsreader": "^5.3.0",
+    "astro": "^7.4.7"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@axe-core/playwright": "^4.14.0",
+    "@types/node": "^22.20.5",
+    "playwright": "^1.65.0",
+    "typescript": "^6.0.3",
+    "vitest": "^5.1.0"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.23.4"
+  }
+}

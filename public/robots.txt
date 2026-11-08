@@ -1,0 +1,4 @@
+# Private review draft. This only asks well-behaved crawlers not to index;
+# it is not access control.
+User-agent: *
+Disallow: /
