@@ -1,0 +1,27 @@
+---
+import type { Project } from '../content/portfolio';
+
+interface Props {
+  project: Project;
+  href: string;
+}
+
+const { project, href } = Astro.props;
+---
+
+<article class="card" aria-labelledby={`card-${project.slug}`}>
+  <div class="card__top">
+    <span class="card__number" aria-hidden="true">{project.number}</span>
+    <span class="status">
+      <span class="status__label">{project.status.label}</span>
+      <span class="status__scope">{project.status.scope}</span>
+    </span>
+  </div>
+  <h3 class="card__title" id={`card-${project.slug}`}>
+    <a class="card__link" href={href}>{project.title}</a>
+  </h3>
+  <p class="card__summary">{project.summary}</p>
+  <p class="card__cta" aria-hidden="true">
+    Read the case study <span class="arrow">→</span>
+  </p>
+</article>

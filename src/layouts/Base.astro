@@ -1,0 +1,77 @@
+---
+import '@fontsource-variable/newsreader/opsz.css';
+import '@fontsource-variable/newsreader/opsz-italic.css';
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+import { site } from '../content/portfolio';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = `${site.name} — ${site.descriptor} about ${site.focus}.` } = Astro.props;
+const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.descriptor}`;
+const base = import.meta.env.BASE_URL;
+const home = base.endsWith('/') ? base : `${base}/`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#f6f1e8" />
+    <link rel="icon" type="image/svg+xml" href={`${home}favicon.svg`} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    {
+      site.draft && (
+        <aside class="draft-bar" aria-label="Review draft notice">
+          <span class="draft-bar__tag">Review draft</span>
+          <span>Private review copy. Some details are pending confirmation before release.</span>
+        </aside>
+      )
+    }
+    <header class="site-header">
+      <div class="wrap site-header__inner">
+        <a class="wordmark" href={home}>
+          <span class="wordmark__mark" aria-hidden="true"></span>
+          {site.name}
+        </a>
+        <nav aria-label="Primary">
+          <a href={`${home}#work`}>Case studies</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap site-footer__inner">
+        <p>
+          {site.name} · {site.descriptor}
+        </p>
+        <p class="muted">
+          Case studies describe prototype work and intended benefits, not measured results.
+        </p>
+        {
+          site.profileLinks.length > 0 && (
+            <ul class="profile-links">
+              {site.profileLinks.map((l) => (
+                <li>
+                  <a href={l.url}>{l.label}</a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+---
+import type { FlowDiagram, StepKind } from '../content/portfolio';
+
+interface Props {
+  diagram: FlowDiagram;
+  id: string;
+}
+
+const { diagram, id } = Astro.props;
+
+const glyphs: Record<StepKind, string> = {
+  ai: 'M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z',
+  customer: 'M4 6h16v9H9l-5 4z',
+  artifact: 'M6 3h9l4 4v14H6zM9 10h7M9 14h7M9 18h4',
+  human: 'M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4.4 3.6-7 8-7s8 2.6 8 7',
+  config: 'M4 7h10M18 7h2M4 17h4M12 17h8M16 5v4M10 15v4',
+  outcome: 'M5 12l4 4 10-10',
+};
+---
+
+<figure class="flow" aria-labelledby={`${id}-label`}>
+  <p class="flow__label eyebrow" id={`${id}-label`}>{diagram.label}</p>
+  <ol class="flow__steps">
+    {
+      diagram.steps.map((step, i) => (
+        <li class="flow__col">
+          <div class={`flow__node flow__node--${step.kind}`}>
+            <span class="flow__index" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span class="flow__actor">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                <path d={glyphs[step.kind]} />
+              </svg>
+              {step.actor}
+            </span>
+            <span class="flow__title">{step.title}</span>
+            {step.items && (
+              <ul class="flow__items">
+                {step.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+          {step.support && (
+            <div class="flow__support">
+              <span class="flow__relation">{step.support.relation}</span>
+              <div class={`flow__node flow__node--support flow__node--${step.support.kind}`}>
+                <span class="flow__actor">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                    <path d={glyphs[step.support.kind]} />
+                  </svg>
+                  {step.support.actor}
+                </span>
+                <span class="flow__title">{step.support.title}</span>
+                {step.support.items && (
+                  <ul class="flow__items">
+                    {step.support.items.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+  <figcaption class="flow__caption">{diagram.caption}</figcaption>
+</figure>

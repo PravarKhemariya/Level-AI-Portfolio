@@ -1,0 +1,35 @@
+---
+// Decorative: two lanes (AI and human) that meet and continue as one.
+---
+
+<svg class="motif" viewBox="0 0 520 360" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="motif-grid" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1.2" class="motif__dot"></circle>
+    </pattern>
+  </defs>
+  <rect x="0" y="0" width="520" height="360" fill="url(#motif-grid)"></rect>
+
+  <path class="motif__lane motif__lane--ai" d="M106 90 C 190 90, 210 180, 300 180"></path>
+  <path class="motif__lane motif__lane--human" d="M128 270 C 200 270, 210 180, 300 180"></path>
+  <path class="motif__lane motif__lane--shared" d="M300 180 L 326 180"></path>
+
+  <g class="motif__chip" transform="translate(20 75)">
+    <rect width="86" height="30" rx="15"></rect>
+    <text x="43" y="20">AI agent</text>
+  </g>
+  <g class="motif__chip motif__chip--human" transform="translate(20 255)">
+    <rect width="108" height="30" rx="15"></rect>
+    <text x="54" y="20">Human agent</text>
+  </g>
+
+  <g class="motif__card" transform="translate(326 120)">
+    <rect width="168" height="120" rx="14"></rect>
+    <text x="18" y="30" class="motif__card-title">Shared context</text>
+    <rect x="18" y="46" width="112" height="8" rx="4" class="motif__line"></rect>
+    <rect x="18" y="66" width="132" height="8" rx="4" class="motif__line"></rect>
+    <rect x="18" y="86" width="92" height="8" rx="4" class="motif__line"></rect>
+  </g>
+
+  <circle cx="300" cy="180" r="7" class="motif__node"></circle>
+</svg>
